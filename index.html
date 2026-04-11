@@ -9,13 +9,21 @@
   </head>
 
   <body>
-    <div id="root">
-    </div>
 
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
+    <!-- Search -->
+    <input type="text" id="searchInput" placeholder="Search episodes..." />
 
-    <!-- Loads YOUR javascript code -->
+    <!-- Dropdown -->
+    <select id="episodeSelect"></select>
+
+    <!-- Episode count -->
+    <p id="episodeCount"></p>
+
+    <!-- Episodes render here -->
+    <div id="root"></div>
+
+    <!-- JS ONLY (episodes.js removed for Level 300) -->
     <script src="script.js"></script>
+
   </body>
 </html>

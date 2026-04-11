@@ -1,18 +1,46 @@
-//You can edit ALL of the code here
+// Global store
+let allEpisodes = [];
+
+// Runs on page load
 function setup() {
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+  const rootElem = document.getElementById("root");
+
+  // Loading message
+  rootElem.textContent = "Loading episodes...";
+
+  fetch("https://api.tvmaze.com/shows/82/episodes")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to load data");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      allEpisodes = data;
+
+      makePageForEpisodes(allEpisodes);
+      setupSearch();
+      setupDropdown();
+    })
+    .catch(() => {
+      rootElem.textContent = "Error loading episodes. Please try again.";
+    });
 }
 
+// Render episodes
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = "";
+
+  // Episode count
+  document.getElementById("episodeCount").textContent =
+    `Displaying ${episodeList.length} / ${allEpisodes.length} episodes`;
 
   episodeList.forEach((episode) => {
     const card = document.createElement("div");
     card.className = "card";
 
-    // Create episode code S01E01
+    // Episode code
     const season = String(episode.season).padStart(2, "0");
     const number = String(episode.number).padStart(2, "0");
     const code = `S${season}E${number}`;
@@ -33,7 +61,7 @@ function makePageForEpisodes(episodeList) {
     const summary = document.createElement("p");
     summary.innerHTML = episode.summary;
 
-    // Append elements
+    // Append
     card.appendChild(title);
     card.appendChild(img);
     card.appendChild(summary);
@@ -43,8 +71,57 @@ function makePageForEpisodes(episodeList) {
 
   // TVMaze credit
   const credit = document.createElement("p");
-  credit.innerHTML = `Data originally from <a href="https://tvmaze.com/" target="_blank">TVMaze.com</a>`;
+  credit.innerHTML =
+    'Data originally from <a href="https://tvmaze.com/" target="_blank">TVMaze.com</a>';
   rootElem.appendChild(credit);
 }
 
+// 🔍 SEARCH
+function setupSearch() {
+  const searchInput = document.getElementById("searchInput");
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    const filteredEpisodes = allEpisodes.filter((ep) => {
+      return (
+        ep.name.toLowerCase().includes(searchTerm) ||
+        ep.summary.toLowerCase().includes(searchTerm)
+      );
+    });
+
+    makePageForEpisodes(filteredEpisodes);
+  });
+}
+
+// 🔽 DROPDOWN
+function setupDropdown() {
+  const select = document.getElementById("episodeSelect");
+
+  select.innerHTML = "";
+
+  allEpisodes.forEach((ep) => {
+    const option = document.createElement("option");
+
+    const season = String(ep.season).padStart(2, "0");
+    const number = String(ep.number).padStart(2, "0");
+
+    option.value = ep.id;
+    option.textContent = `S${season}E${number} - ${ep.name}`;
+
+    select.appendChild(option);
+  });
+
+  select.addEventListener("change", function () {
+    const selectedId = Number(select.value);
+
+    const selectedEpisode = allEpisodes.filter((ep) => {
+      return ep.id === selectedId;
+    });
+
+    makePageForEpisodes(selectedEpisode);
+  });
+}
+
+// Start app
 window.onload = setup;
