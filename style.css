@@ -1,3 +1,31 @@
 #root {
-  color: red;
+  display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .card {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .title {
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    padding: 5px;
+    text-align: center;
+  }
+  
+  .card img {
+    display: block;
+    margin: 10px auto;
+    max-width: 100%;
+  }
+  
+  .card p {
+    font-size: 14px;
 }
