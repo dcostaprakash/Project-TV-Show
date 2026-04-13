@@ -2,12 +2,26 @@
 let allEpisodes = [];
 
 // Runs on page load
-function setup() {
-  allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+async function setup() {
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = "<p>Loading episodes... please wait ⏳</p>";
 
-  setupSearch();
-  setupDropdown();
+  try {
+    const response = await fetch("https://api.tvmaze.com/shows/82/episodes");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    const data = await response.json();
+    allEpisodes = data;
+    makePageForEpisodes(allEpisodes);
+    setupSearch();
+    setupDropdown();
+  } catch (error) {
+    rootElem.innerHTML =
+      "<p>❌ Error loading data. Please try again later.</p>";
+  }
 }
 
 // Render episodes
@@ -15,7 +29,6 @@ function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = "";
 
-  // ✅ Episode count display
   document.getElementById("episodeCount").textContent =
     `Displaying ${episodeList.length} / ${allEpisodes.length} episodes`;
 
@@ -68,7 +81,7 @@ function setupSearch() {
     const filteredEpisodes = allEpisodes.filter((ep) => {
       return (
         ep.name.toLowerCase().includes(searchTerm) ||
-        ep.summary.toLowerCase().includes(searchTerm)
+        (ep.summary || "").toLowerCase().includes(searchTerm)
       );
     });
 
@@ -79,6 +92,8 @@ function setupSearch() {
 // 🔽 DROPDOWN FUNCTION
 function setupDropdown() {
   const select = document.getElementById("episodeSelect");
+
+  select.innerHTML = "";
 
   allEpisodes.forEach((ep) => {
     const option = document.createElement("option");
@@ -92,7 +107,7 @@ function setupDropdown() {
     select.appendChild(option);
   });
 
-  select.addEventListener("change", function () {
+  select.onchange = function () {
     const selectedId = Number(select.value);
 
     const selectedEpisode = allEpisodes.filter((ep) => {
@@ -100,7 +115,7 @@ function setupDropdown() {
     });
 
     makePageForEpisodes(selectedEpisode);
-  });
+  };
 }
 
 // Load app
