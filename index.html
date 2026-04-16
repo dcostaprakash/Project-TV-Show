@@ -3,25 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | Prakash Dcosta (dcostaprakash)</title>
+    <title>TV Show Project</title>
     <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
-      <input id="search-input" type="text" placeholder="Search episodes..." />
+    <h1>TV Shows</h1>
 
-      <select id="episode-selector">
-        <option value="all">All Episodes</option>
-      </select>
+    <!-- Show dropdown (NEW Level 400) -->
+    <select id="show-selector">
+      <option value="">Select a show...</option>
+    </select>
 
-      <div id="root"></div>
-    
+    <!-- Search -->
+    <input id="search-input" type="text" placeholder="Search episodes..." />
 
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
+    <!-- Episode dropdown -->
+    <select id="episode-selector">
+      <option value="all">All Episodes</option>
+    </select>
 
-    <!-- Loads YOUR javascript code -->
+    <!-- Counter -->
+    <p id="count"></p>
+
+    <!-- Episodes -->
+    <div id="root"></div>
+
+    <p>
+      Data originally from
+      <a href="https://tvmaze.com/" target="_blank">TVMaze.com</a>
+    </p>
+
     <script src="script.js"></script>
   </body>
 </html>
