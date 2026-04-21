@@ -84,7 +84,7 @@ function populateEpisodeSelector(episodes) {
     selector.appendChild(option);
   });
 
-  selector.addEventListener("change", handleEpisodeSelect);
+  selector.onchange = handleEpisodeSelect;
 }
 
 function handleEpisodeSelect(event) {
@@ -108,8 +108,8 @@ function setupSearch() {
 
     const filtered = allEpisodes.filter((ep) => {
       return (
-        ep.name.toLowerCase().includes(searchTerm) ||
-        ep.summary.toLowerCase().includes(searchTerm)
+        (ep.name || "").toLowerCase().includes(searchTerm) ||
+        (ep.summary || "").toLowerCase().includes(searchTerm)
       );
     });
 
@@ -126,15 +126,29 @@ function makePageForEpisodes(episodeList) {
   count.textContent = `Displaying ${episodeList.length} / ${allEpisodes.length} episodes`;
 
   episodeList.forEach((ep) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
     const code = formatEpisodeCode(ep);
 
-    const card = document.createElement("div");
+    const title = document.createElement("h3");
+    title.textContent = `${ep.name} - ${code}`;
 
-    card.innerHTML = `
-      <h3>${ep.name} - ${code}</h3>
-      <img src="${ep.image.medium}" />
-      <p>${ep.summary}</p>
-    `;
+    const img = document.createElement("img");
+
+    if (ep.image && ep.image.medium) {
+      img.src = ep.image.medium;
+      img.alt = ep.name;
+    } else {
+      img.alt = "No image available";
+    }
+
+    const summary = document.createElement("p");
+    summary.innerHTML = ep.summary || "No summary available.";
+
+    card.appendChild(title);
+    card.appendChild(img);
+    card.appendChild(summary);
 
     root.appendChild(card);
   });
