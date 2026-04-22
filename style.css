@@ -29,3 +29,29 @@
   .card p {
     font-size: 14px;
 }
+.show-card {
+  width: 90%;
+  max-width: 1000px;
+  cursor: pointer;
+}
+
+.show-content {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.show-content img {
+  width: 150px;
+  height: auto;
+  border-radius: 6px;
+}
+
+.info-box {
+  min-width: 180px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+}
