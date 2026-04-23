@@ -237,12 +237,6 @@ function setupSearch() {
       renderShowCards(filteredShows);
       //  AUTO-SELECT FIRST RESULT
       const showSelector = document.getElementById("show-selector");
-
-      if (filteredShows.length > 0) {
-        showSelector.value = filteredShows[0].id;
-      } else {
-        showSelector.value = "";
-      }
     }
     // EPISODE SEARCH MODE
     else {
@@ -354,6 +348,10 @@ function setEpisodeModeUI(isEpisodeMode) {
 
   searchInput.style.opacity = "1";
   searchInput.style.pointerEvents = "auto";
+
+  searchInput.placeholder = isEpisodeMode
+    ? "Search episodes..."
+    : "Search shows...";
 
   if (isEpisodeMode) {
     showSelector.disabled = true;
