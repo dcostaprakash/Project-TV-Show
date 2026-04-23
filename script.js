@@ -102,6 +102,10 @@ function renderShowCards(showList) {
     const card = document.createElement("div");
     card.className = "card show-card";
 
+    card.addEventListener("click", () => {
+      handleShowSelect({ target: { value: String(show.id) } });
+    });
+
     const title = document.createElement("h2");
     title.textContent = show.name;
 
